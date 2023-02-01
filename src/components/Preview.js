@@ -65,37 +65,34 @@ class Preview extends React.Component {
   }
 
   handleExpand(e) {
-    this.setState(
-      {
-        expand: !this.state.expand,
-      },
-      () => {
-        this.toggle(e);
-      }
-    );
-  }
-
-  toggle(e) {
     const target = e.target;
 
+    switch (target.localName) {
+      case 'i':
+        this.toggle(target.parentNode);
+        break;
+
+      default:
+        this.toggle(target);
+        break;
+    }
+  }
+
+  toggle(target) {
     const parent = target.parentNode;
     const gParent = target.parentNode.parentNode;
     const sibling = target.parentNode.previousSibling;
     const targetSibling = target.previousSibling;
 
-    if (this.state.expand) {
-      parent.classList.add('size');
-      sibling.classList.add('hide');
-      gParent.classList.add('expand');
-      targetSibling.classList.add('expand-preview');
-      targetSibling.classList.remove('preview');
-    } else {
-      parent.classList.remove('size');
-      sibling.classList.remove('hide');
-      gParent.classList.remove('expand');
-      targetSibling.classList.add('preview');
-      targetSibling.classList.remove('expand-preview');
-    }
+    parent.classList.toggle('size');
+    sibling.classList.toggle('hide');
+    gParent.classList.toggle('expand');
+    targetSibling.classList.toggle('expand-preview');
+    targetSibling.classList.toggle('preview');
+
+    this.setState({
+      expand: !this.state.expand,
+    });
   }
 
   render() {
@@ -116,9 +113,9 @@ class Preview extends React.Component {
           text={this.state.expand ? 'compress' : 'expand'}
           node={
             this.state.expand ? (
-              <i class="las la-compress-arrows-alt"></i>
+              <i className="las la-compress-arrows-alt"></i>
             ) : (
-              <i class="las la-expand-arrows-alt"></i>
+              <i className="las la-expand-arrows-alt"></i>
             )
           }
           bgCl="#0ca940"
