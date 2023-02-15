@@ -11,7 +11,8 @@ const SButton = styled.button`
   border-radius: 3px;
   outline: 1px solid #343a40;
   display: flex;
-  align-items: center;
+  align-items: baseline;
+
   gap: 4px;
   color: ${(props) => (props.bgCl ? '#ffffff' : '#343a40')};
   text-transform: capitalize;

@@ -1,3 +1,4 @@
+import html2pdf from 'html2pdf.js';
 import React from 'react';
 import styled from 'styled-components';
 import EducationPreview from './previews/EducationPreview';
@@ -39,6 +40,13 @@ const Aside = styled.aside`
     flex-direction: column;
     gap: 0.8em;
   }
+
+  .load {
+    padding: 16px;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
 `;
 
 class Preview extends React.Component {
@@ -64,16 +72,34 @@ class Preview extends React.Component {
     }, 2000);
   }
 
+  handleDownload() {
+    let element = document.querySelector('.preview');
+
+    if (!element) {
+      element = document.querySelector('.expand-preview');
+    }
+
+    const opt = {
+      margin: 0,
+      filename: 'myfile.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { width: 960, x: -70, y: -30 },
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+    };
+
+    html2pdf().set(opt).from(element).save('cv-document');
+  }
+
   handleExpand(e) {
     const target = e.target;
 
     switch (target.localName) {
       case 'i':
-        this.toggle(target.parentNode);
+        this.toggle(target.parentNode.parentNode);
         break;
 
       default:
-        this.toggle(target);
+        this.toggle(target.parentNode);
         break;
     }
   }
@@ -96,7 +122,6 @@ class Preview extends React.Component {
   }
 
   render() {
-    console.log('rendered');
     const { education, experience, personal, project, technical } =
       this.props.data;
 
@@ -109,18 +134,28 @@ class Preview extends React.Component {
           <ProjectPreview data={project} />
           <TechnicalPreview data={technical} />
         </div>
-        <Button
-          text={this.state.expand ? 'compress' : 'expand'}
-          node={
-            this.state.expand ? (
-              <i className="las la-compress-arrows-alt"></i>
-            ) : (
-              <i className="las la-expand-arrows-alt"></i>
-            )
-          }
-          bgCl="#0ca940"
-          fn={this.handleExpand}
-        />
+
+        <div className="load">
+          <Button
+            text={this.state.expand ? 'compress' : 'expand'}
+            node={
+              this.state.expand ? (
+                <i className="las la-compress-arrows-alt"></i>
+              ) : (
+                <i className="las la-expand-arrows-alt"></i>
+              )
+            }
+            bgCl="#0ca940"
+            fn={this.handleExpand}
+          />
+          <Button
+            text="download"
+            type="button"
+            node={<i className="las la-file-pdf"></i>}
+            bgCl="#4314b6"
+            fn={this.handleDownload}
+          />
+        </div>
       </Aside>
     );
   }

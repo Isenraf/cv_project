@@ -35,7 +35,6 @@ function Form({ state, change, add, load, reset }) {
       <div className="load">
         <Button text="cv example" bgCl="#1d1d20" fn={load} type="button" />
         <Button text="reset form" type="button" fn={reset} />
-        {/* <Button text="download" type="button" bgCl="#364fc7" /> */}
       </div>
     </SForm>
   );

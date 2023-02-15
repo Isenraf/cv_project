@@ -78,7 +78,7 @@ class EducationForm extends React.Component {
               type="text"
               name="degree"
               id="degree"
-              placeholder="Southwestern University"
+              placeholder="Bachelor of Arts in Computer Science, Minor in Business"
               value={this.state.education.degree}
               fn={this.handleChange}
             />
